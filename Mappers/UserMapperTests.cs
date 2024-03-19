@@ -4,9 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PlanITAPI_UnitTests.Mappers
+namespace PlanITAPI_UnitTests.Mappers;
+
+public class UserMapperTests
 {
-    internal class UserMapperTests
-    {
-    }
 }
