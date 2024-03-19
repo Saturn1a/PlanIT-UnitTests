@@ -4,9 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PlanITAPI_UnitTests.Controllers
+namespace PlanITAPI_UnitTests.Controllers;
+
+public class UserControllerTest
 {
-    internal class UserControllerTest
-    {
-    }
 }
