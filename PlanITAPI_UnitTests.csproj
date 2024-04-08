@@ -25,7 +25,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\PlanIT.API\PlanIT.API.csproj" />
+    <ProjectReference Include="..\..\src\PlanIT-API\PlanIT.API.csproj" />
   </ItemGroup>
 
   <ItemGroup>
