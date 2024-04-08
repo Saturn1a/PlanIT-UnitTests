@@ -21,16 +21,16 @@ public class AuthenticationServiceTests
         var loggerMock = new Mock<ILogger<AuthenticationService>>();
 
         var authService = new AuthenticationService(userRepositoryMock.Object, configurationMock.Object, loggerMock.Object);
-        var email = "per@hansen.com";
-        var incorrectPassword = "Prhansen#";
+        var email = "kari@normann.com";
+        var incorrectPassword = "Krijormann#";
 
         var user = new User
         {
             Id = 1,
             Email = email,
-            HashedPassword = BCrypt.Net.BCrypt.HashPassword("P1rhansen#"),
-            Salt = "$2a$11$H.YLW/LIwUy1/UicyUvn2."
-        };
+            HashedPassword = BCrypt.Net.BCrypt.HashPassword("K1rinormann#"),
+            Salt = BCrypt.Net.BCrypt.GenerateSalt()
+    };
 
         userRepositoryMock.Setup(repo => repo.GetUserByEmailAsync(email))
                           .ReturnsAsync(user);
@@ -64,7 +64,7 @@ public class AuthenticationServiceTests
             .Build();
 
         var authService = new AuthenticationService(userRepositoryMock.Object, configuration, loggerMock.Object);
-        var user = new User { Id = 1, Email = "user@example.com" };
+        var user = new User { Id = 1, Email = "kari@normann.com" };
 
         // Act
         var token = await authService.GenerateJwtTokenAsync(user);
