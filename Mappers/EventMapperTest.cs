@@ -2,11 +2,7 @@
 using PlanIT.API.Mappers;
 using PlanIT.API.Models.DTOs;
 using PlanIT.API.Models.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace PlanITAPI_UnitTests.Mappers;
 
@@ -27,7 +23,7 @@ public class EventMapperTest
             Name = "Birthday Party",
             Location = "Leos Lekland",
             Date = new DateOnly(2024, 07, 16),
-            Time = "17:30"   
+            Time = new TimeOnly(17,30)   
 
         };
         

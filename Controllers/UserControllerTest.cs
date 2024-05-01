@@ -115,7 +115,7 @@ public class UserControllerTest
         _userServiceMOCK.Setup(x => x.GetByIdAsync(userId)).ReturnsAsync(userDTO);
 
         // ACT
-        var result = await _usersController.DeleteUserAsync(userId);
+        var result = await _usersController.DeleteUserAsync();
 
         // ASSERT
         var actionResult = Assert.IsType<ActionResult<UserDTO>>(result);
@@ -125,14 +125,4 @@ public class UserControllerTest
 
 
     }
-
-
-
-
-
-
-
-
-
-
 }
