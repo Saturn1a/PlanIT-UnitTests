@@ -9,11 +9,45 @@ using System.Text;
 
 namespace PlanITAPI_UnitTests.Services;
 
+
 public class AuthenticationServiceTests
 {
 
     [Fact]
-    public async Task AuthenticateUserAsync_IncorrectPassword_ReturnsNull()
+    public async Task AuthenticateUserAsync_CorrectPassword_ReturnsUser()
+    {
+        // Arrange
+        var userRepositoryMock = new Mock<IUserRepository>();
+        var configurationMock = new Mock<IConfiguration>();
+        var loggerMock = new Mock<ILogger<AuthenticationService>>();
+
+        var authService = new AuthenticationService(userRepositoryMock.Object, configurationMock.Object, loggerMock.Object);
+        var email = "kari@normann.com";
+        var correctPassword = "K1rinormann#";
+
+        var user = new User
+        {
+            Id = 1,
+            Email = email,
+            HashedPassword = BCrypt.Net.BCrypt.HashPassword(correctPassword)
+        };
+
+        userRepositoryMock.Setup(repo => repo.GetUserByEmailAsync(email))
+                          .ReturnsAsync(user);
+
+        // Act
+        var result = await authService.AuthenticateUserAsync(email, correctPassword);
+
+        // Assert
+        Assert.NotNull(result);
+        Assert.Equal(user.Id, result.Id);
+        Assert.Equal(user.Email, result.Email);
+    }
+
+
+
+    [Fact]
+    public async Task AuthenticateUserAsync_WithIncorrectPassword_ShouldReturnNull()
     {
         // Arrange
         var userRepositoryMock = new Mock<IUserRepository>();
@@ -29,8 +63,7 @@ public class AuthenticationServiceTests
             Id = 1,
             Email = email,
             HashedPassword = BCrypt.Net.BCrypt.HashPassword("K1rinormann#"),
-            Salt = BCrypt.Net.BCrypt.GenerateSalt()
-    };
+        };
 
         userRepositoryMock.Setup(repo => repo.GetUserByEmailAsync(email))
                           .ReturnsAsync(user);
@@ -53,7 +86,7 @@ public class AuthenticationServiceTests
 
         var inMemorySettings = new Dictionary<string, string?>
         {
-            ["Jwt:Secret"] = "a-very-long-secret-key-to-meet-the-bit-requirement",
+            ["JwtSecret"] = "a-very-long-secret-key-to-meet-the-bit-requirement",
             ["Jwt:Issuer"] = "testIssuer",
             ["Jwt:Audience"] = "testAudience",
             ["Jwt:ExpiryInMinutes"] = "60"
@@ -84,7 +117,7 @@ public class AuthenticationServiceTests
 
         var inMemorySettings = new Dictionary<string, string?>
         {
-            ["Jwt:Secret"] = "a-very-long-secret-key-here-to-meet-the-bit-requirement",
+            ["JwtSecret"] = "a-very-long-secret-key-here-to-meet-the-bit-requirement",
             ["Jwt:Issuer"] = "testIssuer",
             ["Jwt:Audience"] = "testAudience",
             ["Jwt:ExpiryInMinutes"] = "60"
@@ -107,7 +140,7 @@ public class AuthenticationServiceTests
 
         // Assert
         var parts = token.Split('.');
-        Assert.Equal(3, parts.Length); // JWT tokens har 3 deler, separert med punktum
+        Assert.Equal(3, parts.Length); // JWT tokens have 3 parts, separated by periods.
     }
 
 
@@ -119,7 +152,7 @@ public class AuthenticationServiceTests
         var loggerMock = new Mock<ILogger<AuthenticationService>>();
         var inMemorySettings = new Dictionary<string, string?>
         {
-            ["Jwt:Secret"] = "a-very-long-secret-key-here-to-meet-the-bit-requirement",
+            ["JwtSecret"] = "a-very-long-secret-key-here-to-meet-the-bit-requirement",
             ["Jwt:Issuer"] = "testIssuer",
             ["Jwt:Audience"] = "testAudience",
             ["Jwt:ExpiryInMinutes"] = "60"
@@ -142,12 +175,13 @@ public class AuthenticationServiceTests
 
         // Assert
         var parts = token.Split('.');
-        var payload = parts[1]; // JWT's payload er i andre delen av token
-        var claims = DecodePayload(payload); 
+        var payload = parts[1]; // JWT's payload is in the second part of the token
+        var claims = DecodePayload(payload);
         Assert.Contains("\"email\":\"kari@normann.com\"", claims);
     }
 
-    // Hjelpemetode for å dekode JWT payload fra base64 til JSON
+
+    // Helper method to decode JWT payload from base64 to JSON
     private string DecodePayload(string payload)
     {
         var bytes = Convert.FromBase64String(payload);
@@ -165,8 +199,8 @@ public class AuthenticationServiceTests
         var configurationMock = new Mock<IConfiguration>();
         var loggerMock = new Mock<ILogger<AuthenticationService>>();
 
-        // Simulerer manglende konfigurasjon ved å ikke sette nødvendige verdier
-        configurationMock.SetupGet(x => x["Jwt:Secret"]).Returns(string.Empty);
+        // Simulates missing configuration by not setting necessary values
+        configurationMock.SetupGet(x => x["JwtSecret"]).Returns(string.Empty);
         configurationMock.SetupGet(x => x["Jwt:Issuer"]).Returns(string.Empty);
         configurationMock.SetupGet(x => x["Jwt:Audience"]).Returns(string.Empty);
         configurationMock.SetupGet(x => x["Jwt:ExpiryInMinutes"]).Returns(string.Empty);
@@ -180,8 +214,7 @@ public class AuthenticationServiceTests
         };
 
         // Act & Assert
-        // Forventer at en InvalidOperationException kastes grunnet manglende konfigurasjon
+        // Expects an InvalidOperationException to be thrown due to missing configuration
         await Assert.ThrowsAsync<InvalidOperationException>(() => authService.GenerateJwtTokenAsync(user));
     }
-
 }
