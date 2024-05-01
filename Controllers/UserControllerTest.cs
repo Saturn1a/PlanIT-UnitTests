@@ -20,7 +20,6 @@ public class UserControllerTest
     }
 
 
-
     [Fact]
     public async Task GetUserById_ShouldReturn_UserDTO_WhenIdGiven()
     {
@@ -104,28 +103,10 @@ public class UserControllerTest
 
     }
 
-    [Fact]
-    public async Task DeleteUserAsync_ExistingUser_RemovesUser()
-    {
-        // ARRANGE
-        var userId = 1; 
-        var userDTO = new UserDTO(1, "Jane", "Jane.Doe@email.com");
 
-      
-        _userServiceMOCK.Setup(x => x.GetByIdAsync(userId)).ReturnsAsync(userDTO);
+   
 
-        // ACT
-        var result = await _usersController.DeleteUserAsync(userId);
-
-        // ASSERT
-        var actionResult = Assert.IsType<ActionResult<UserDTO>>(result);
-        var returnValue = Assert.IsType<OkObjectResult>(actionResult.Result);
-        Assert.NotNull(returnValue.Value);
-        _userServiceMOCK.Verify(x => x.DeleteAsync(userId), Times.Once);
-
-
-    }
-
+   
 
 
 

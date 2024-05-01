@@ -30,7 +30,6 @@ public class DinnerMapperDTO
         };
       
 
-
         // ACT
         var dinnerDTO = _eventMapper.MapToDTO(dinner);
 
@@ -43,8 +42,8 @@ public class DinnerMapperDTO
         Assert.Equal(dinner.Date, dinnerDTO.Date);
        
 
-
-
     }
+
+
 
 }
