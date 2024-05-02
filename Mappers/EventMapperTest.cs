@@ -23,7 +23,8 @@ public class EventMapperTest
             Name = "Birthday Party",
             Location = "Leos Lekland",
             Date = new DateOnly(2024, 07, 16),
-            Time = new TimeOnly(17,30)   
+            Time = new TimeOnly(18, 00, 00)
+
 
         };
         
@@ -41,8 +42,25 @@ public class EventMapperTest
         Assert.Equal(plannedEvent.Date, eventDTO.Date);
         Assert.Equal(plannedEvent.Time, eventDTO.Time);
 
+    }
 
+  
+    [Fact]
+    public void MapToModel_EventDTO_ShouldReturnEventEntity()
+    {
+        // ARRANGE
+        EventDTO eventDTO = new EventDTO(1, 1, "Birthday Party", new DateOnly(2024, 07, 16), new TimeOnly(18, 00, 00), "Leos Lekland");
 
+        // ACT
+        var eventEntity = _eventMapper.MapToModel(eventDTO);
 
+        // ASSERT
+        Assert.NotNull(eventEntity);
+        Assert.Equal(eventDTO.Id, eventEntity.Id);
+        Assert.Equal(eventDTO.UserId, eventEntity.UserId);
+        Assert.Equal(eventDTO.Name, eventEntity.Name);
+        Assert.Equal(eventDTO.Location, eventEntity.Location);
+        Assert.Equal(eventDTO.Date, eventEntity.Date);
+        Assert.Equal(eventDTO.Time, eventEntity.Time);
     }
 }

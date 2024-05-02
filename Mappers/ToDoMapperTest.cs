@@ -36,10 +36,24 @@ public class ToDoMapperTest
         Assert.Equal(toDo.UserId, toDoDTO.UserId);
         Assert.Equal(toDo.Name, toDoDTO.Name);
         
-
-
-
     }
+
+    [Fact]
+    public void MapToModel_ToDoDTO_ShouldReturnToDoEntity()
+    {
+        // ARRANGE
+        ToDoDTO toDoDTO = new ToDoDTO(1, 1, "Wash laundry");
+
+        // ACT
+        var toDoEntity = _toDoMapper.MapToModel(toDoDTO);
+
+        // ASSERT
+        Assert.NotNull(toDoEntity);
+        Assert.Equal(toDoDTO.Id, toDoEntity.Id);
+        Assert.Equal(toDoDTO.UserId, toDoEntity.UserId);
+        Assert.Equal(toDoDTO.Name, toDoEntity.Name);
+    }
+
 }
 
 
