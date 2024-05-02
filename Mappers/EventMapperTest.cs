@@ -2,11 +2,7 @@
 using PlanIT.API.Mappers;
 using PlanIT.API.Models.DTOs;
 using PlanIT.API.Models.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace PlanITAPI_UnitTests.Mappers;
 
@@ -29,6 +25,7 @@ public class EventMapperTest
             Date = new DateOnly(2024, 07, 16),
             Time = new TimeOnly(18, 00, 00)
 
+
         };
         
 
@@ -47,6 +44,7 @@ public class EventMapperTest
 
     }
 
+  
     [Fact]
     public void MapToModel_EventDTO_ShouldReturnEventEntity()
     {
@@ -65,6 +63,4 @@ public class EventMapperTest
         Assert.Equal(eventDTO.Date, eventEntity.Date);
         Assert.Equal(eventDTO.Time, eventEntity.Time);
     }
-
-
 }
