@@ -11,13 +11,13 @@ namespace PlanITAPI_UnitTests.Controllers;
 
 public class InviteControllerTest
 {
-    private readonly Mock<IService<InviteDTO>> _mockService;
+    private readonly Mock<IInviteService> _mockService;
     private readonly Mock<ILogger<InvitesController>> _mockLogger;
     private readonly InvitesController _controller;
 
     public InviteControllerTest()
     {
-        _mockService = new Mock<IService<InviteDTO>>();
+        _mockService = new Mock<IInviteService>();
         _mockLogger = new Mock<ILogger<InvitesController>>();
         _controller = new InvitesController(_mockService.Object, _mockLogger.Object);
 
