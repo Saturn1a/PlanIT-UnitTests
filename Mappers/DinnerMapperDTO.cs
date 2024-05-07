@@ -2,18 +2,14 @@
 using PlanIT.API.Mappers;
 using PlanIT.API.Models.DTOs;
 using PlanIT.API.Models.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace PlanITAPI_UnitTests.Mappers;
 
 public class DinnerMapperDTO
 {
 
-    private readonly IMapper<Dinner, DinnerDTO> _eventMapper = new DinnerMapper();
+    private readonly IMapper<Dinner, DinnerDTO> _dinnerMapper = new DinnerMapper();
 
 
     [Fact]
@@ -31,7 +27,7 @@ public class DinnerMapperDTO
       
 
         // ACT
-        var dinnerDTO = _eventMapper.MapToDTO(dinner);
+        var dinnerDTO = _dinnerMapper.MapToDTO(dinner);
 
 
         // ASSERT
